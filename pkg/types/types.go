@@ -1,21 +1,25 @@
-package iex
+package types
 
-const (
-	// Current IEX API version
-	IEXAPIVersion = "1.0"
-	typeQuoteStr  = "quote"
-	typeNewsStr   = "news"
-	typeChartStr  = "chart"
-	typeStockStr  = "stock"
-	typePriceStr  = "price"
-	typeBatchStr  = "batch"
-	typeLastStr   = "last"
-	typeMrktStr   = "market"
-	apiURL        = "https://api.iextrading.com/"
+import (
+	"fmt"
+	"strings"
 )
 
-// IEXQuote repesents the format returned for a quote from IEX(https://iextrading.com)
-type IEXQuote struct {
+const (
+	APIVersion = "1.0"
+	QuoteStr   = "quote"
+	NewsStr    = "news"
+	ChartStr   = "chart"
+	StockStr   = "stock"
+	PriceStr   = "price"
+	BatchStr   = "batch"
+	LastStr    = "last"
+	MrktStr    = "market"
+	APIURL     = "https://api.iextrading.com/"
+)
+
+// Quote repesents the format returned for a quote from IEX(https://iextrading.com)
+type Quote struct {
 	Symbol           string  `json:symbol`
 	CompanyName      string  `json:companyName`
 	PrimaryExchange  string  `json:primaryExchange`
@@ -41,7 +45,8 @@ type IEXQuote struct {
 	Week52Low  float64 `json:week52Low`
 }
 
-type IEXNews struct {
+// News is the news structure returned from IEX
+type News struct {
 	DateTime string `json:datetime`
 	Headline string `json:headline`
 	Source   string `json:source`
@@ -50,5 +55,22 @@ type IEXNews struct {
 	Related  string `json:related`
 }
 
-// IEXBatch is a []IEXQuote
-type IEXBatch map[string]map[string]IEXQuote
+// Batch is a []Quote
+type Batch map[string]map[string]Quote
+
+// Quote returns the quote in a iex batch for a specific ticker
+// returns error if symbol does not exist
+func (i Batch) Quote(ticker string) (Quote, error) {
+	ticker = strings.ToUpper(ticker)
+	t, ok := i[ticker]
+	if !ok {
+		return Quote{}, fmt.Errorf("Failed to find %v in batch request", ticker)
+	}
+
+	q, ok := t[QuoteStr]
+	if !ok {
+		return Quote{}, fmt.Errorf("Failed to find quote for %v in batch request", ticker)
+	}
+
+	return q, nil
+}

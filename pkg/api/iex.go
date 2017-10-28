@@ -2,23 +2,24 @@ package iex
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
-	"strings"
+
+	"github.com/thorfour/iex/pkg/endpoint"
+	"github.com/thorfour/iex/pkg/types"
 )
 
 // Quote returns a stock quote for a given ticker
-func Quote(ticker string) (*IEXQuote, error) {
-	url := api().stock().ticker(ticker).quote()
+func Quote(ticker string) (*types.Quote, error) {
+	url := endpoint.API().Stock().Ticker(ticker).Quote()
 	jsonQuote, err := getJSON(url)
 	if err != nil {
 		return nil, err
 	}
 
-	// Parse into IEX quote
-	var quote IEXQuote
+	// Parse into quote
+	var quote types.Quote
 	err = json.Unmarshal(jsonQuote, &quote)
 	if err != nil {
 		return nil, err
@@ -29,7 +30,7 @@ func Quote(ticker string) (*IEXQuote, error) {
 
 // Price returns the current price of a ticker
 func Price(ticker string) (float64, error) {
-	url := api().stock().ticker(ticker).price()
+	url := endpoint.API().Stock().Ticker(ticker).Price()
 	jsonQuote, err := getJSON(url)
 	if err != nil {
 		return -1, err
@@ -44,16 +45,16 @@ func Price(ticker string) (float64, error) {
 }
 
 // BatchQuotes returns quotes for multiple tickers using a batch request
-func BatchQuotes(tickers []string) (IEXBatch, error) {
+func BatchQuotes(tickers []string) (types.Batch, error) {
 
-	url := api().stock().market().batch().symbols().tickers(tickers).and().types(typeQuoteStr)
+	url := endpoint.API().Stock().Market().Batch().Symbols().Tickers(tickers).And().Types(types.QuoteStr)
 	jsonQuote, err := getJSON(url)
 	if err != nil {
 		return nil, err
 	}
 
-	// Parse into IEX quote
-	var batch IEXBatch
+	// Parse into quote
+	var batch types.Batch
 	err = json.Unmarshal(jsonQuote, &batch)
 	if err != nil {
 		return nil, err
@@ -62,34 +63,17 @@ func BatchQuotes(tickers []string) (IEXBatch, error) {
 	return batch, nil
 }
 
-// Quote returns the quote in a iex batch for a specific ticker
-// returns error if symbol does not exist
-func (i IEXBatch) Quote(ticker string) (IEXQuote, error) {
-	ticker = strings.ToUpper(ticker)
-	t, ok := i[ticker]
-	if !ok {
-		return IEXQuote{}, fmt.Errorf("Failed to find %v in batch request", ticker)
-	}
-
-	q, ok := t[typeQuoteStr]
-	if !ok {
-		return IEXQuote{}, fmt.Errorf("Failed to find quote for %v in batch request", ticker)
-	}
-
-	return q, nil
-}
-
 // News returns the news for a given symbol
-func News(ticker string) ([]IEXNews, error) {
+func News(ticker string) ([]types.News, error) {
 
-	url := api().stock().ticker(ticker).news().last().integer(5)
+	url := endpoint.API().Stock().Ticker(ticker).News().Last().Integer(5)
 	jsonQuote, err := getJSON(url)
 	if err != nil {
 		return nil, err
 	}
 
-	// Parse into IEXNews
-	var news []IEXNews
+	// Parse into News
+	var news []types.News
 	err = json.Unmarshal(jsonQuote, &news)
 	if err != nil {
 		return nil, err
@@ -99,7 +83,7 @@ func News(ticker string) ([]IEXNews, error) {
 }
 
 // getJSON returns the JSON response from a url
-func getJSON(url apiString) ([]byte, error) {
+func getJSON(url endpoint.APIString) ([]byte, error) {
 
 	resp, err := http.Get(url.String())
 	if err != nil {
