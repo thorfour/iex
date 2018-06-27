@@ -40,6 +40,7 @@ type Quote struct {
 	IexAskPrice      float64 `json:iexAskPrice`
 	IexAskSize       float64 `json:iexAskSize`
 	MarketCap        float64 `json:marketCap`
+	LatestPrice      float64 `json:latestPrice`
 	//PeRatio          float64 `json:peRatio`
 	Week52High float64 `json:week52High`
 	Week52Low  float64 `json:week52Low`
