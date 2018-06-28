@@ -94,3 +94,8 @@ func (s APIString) Query(args map[string]interface{}) APIString {
 	api = strings.TrimSuffix(api, ",")
 	return APIString(api)
 }
+
+// Stats adds the stats type
+func (s APIString) Stats() APIString {
+	return APIString(string(s) + types.StatsStr + "/")
+}

@@ -82,6 +82,25 @@ func News(ticker string) ([]types.News, error) {
 	return news, nil
 }
 
+// Stats returns stats about a company
+func Stats(ticker string, displayPercent bool) (*types.Stat, error) {
+
+	url := endpoint.API().Stock().Ticker(ticker).Stats().Query(map[string]interface{}{"displayPercent": displayPercent})
+	jsonStat, err := getJSON(url)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse into stat
+	stat := new(types.Stat)
+	err = json.Unmarshal(jsonStat, &stat)
+	if err != nil {
+		return nil, err
+	}
+
+	return stat, nil
+}
+
 // getJSON returns the JSON response from a url
 func getJSON(url endpoint.APIString) ([]byte, error) {
 
