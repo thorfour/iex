@@ -104,3 +104,13 @@ func (s APIString) Stats() APIString {
 func (s APIString) Earnings() APIString {
 	return APIString(string(s) + types.EarningsStr + "/")
 }
+
+// Dividends adds the dividends type
+func (s APIString) Dividends() APIString {
+	return APIString(string(s) + types.DividendsStr + "/")
+}
+
+// AddString adds an arbitrary string to the end
+func (s APIString) AddString(t string) APIString {
+	return APIString(string(s) + t)
+}

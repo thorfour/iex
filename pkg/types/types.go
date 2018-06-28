@@ -6,18 +6,19 @@ import (
 )
 
 const (
-	APIVersion  = "1.0"
-	QuoteStr    = "quote"
-	NewsStr     = "news"
-	ChartStr    = "chart"
-	StockStr    = "stock"
-	PriceStr    = "price"
-	BatchStr    = "batch"
-	LastStr     = "last"
-	MrktStr     = "market"
-	StatsStr    = "stats"
-	EarningsStr = "earnings"
-	APIURL      = "https://api.iextrading.com/"
+	APIVersion   = "1.0"
+	QuoteStr     = "quote"
+	NewsStr      = "news"
+	ChartStr     = "chart"
+	StockStr     = "stock"
+	PriceStr     = "price"
+	BatchStr     = "batch"
+	LastStr      = "last"
+	MrktStr      = "market"
+	StatsStr     = "stats"
+	EarningsStr  = "earnings"
+	DividendsStr = "dividends"
+	APIURL       = "https://api.iextrading.com/"
 )
 
 // Quote repesents the format returned for a quote from IEX(https://iextrading.com)
@@ -147,6 +148,19 @@ type Earnings struct {
 		EstimatedChangePercent float64 `json:"estimatedChangePercent"`
 		SymbolID               int     `json:"symbolId"`
 	} `json:"earnings"`
+}
+
+// Dividends is returned from iex/dividends
+type Dividends []struct {
+	ExDate       string  `json:"exDate"`
+	PaymentDate  string  `json:"paymentDate"`
+	RecordDate   string  `json:"recordDate"`
+	DeclaredDate string  `json:"declaredDate"`
+	Amount       float64 `json:"amount"`
+	Flag         string  `json:"flag"`
+	Type         string  `json:"type"`
+	Qualified    string  `json:"qualified"`
+	Indicated    string  `json:"indicated"`
 }
 
 // Batch is a []Quote

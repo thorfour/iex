@@ -74,3 +74,10 @@ func TestEarnings(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestDividends(t *testing.T) {
+	_, err := Dividends("aapl", OneYear)
+	if err != nil {
+		t.Fatal(err)
+	}
+}

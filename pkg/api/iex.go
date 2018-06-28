@@ -10,6 +10,19 @@ import (
 	"github.com/thorfour/iex/pkg/types"
 )
 
+// Range is an allowed range string for the dividends endpoint
+type Range string
+
+const (
+	FiveYears   Range = "5y"
+	TwoYears    Range = "2y"
+	OneYear     Range = "1y"
+	YearToDate  Range = "ytd"
+	SixMonths   Range = "6m"
+	ThreeMonths Range = "3m"
+	OneMonth    Range = "1m"
+)
+
 // Quote returns a stock quote for a given ticker
 func Quote(ticker string, displayPercent bool) (*types.Quote, error) {
 	url := endpoint.API().Stock().Ticker(ticker).Quote().Query(map[string]interface{}{"displayPercent": displayPercent})
@@ -118,6 +131,25 @@ func Earnings(ticker string) (*types.Earnings, error) {
 	}
 
 	return earn, nil
+}
+
+// Dividends returns a companies dividends
+func Dividends(ticker string, r Range) (*types.Dividends, error) {
+
+	url := endpoint.API().Stock().Ticker(ticker).Dividends().AddString(string(r))
+	jsonDividend, err := getJSON(url)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse into stat
+	div := new(types.Dividends)
+	err = json.Unmarshal(jsonDividend, &div)
+	if err != nil {
+		return nil, err
+	}
+
+	return div, nil
 }
 
 // getJSON returns the JSON response from a url
