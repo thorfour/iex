@@ -6,17 +6,18 @@ import (
 )
 
 const (
-	APIVersion = "1.0"
-	QuoteStr   = "quote"
-	NewsStr    = "news"
-	ChartStr   = "chart"
-	StockStr   = "stock"
-	PriceStr   = "price"
-	BatchStr   = "batch"
-	LastStr    = "last"
-	MrktStr    = "market"
-	StatsStr   = "stats"
-	APIURL     = "https://api.iextrading.com/"
+	APIVersion  = "1.0"
+	QuoteStr    = "quote"
+	NewsStr     = "news"
+	ChartStr    = "chart"
+	StockStr    = "stock"
+	PriceStr    = "price"
+	BatchStr    = "batch"
+	LastStr     = "last"
+	MrktStr     = "market"
+	StatsStr    = "stats"
+	EarningsStr = "earnings"
+	APIURL      = "https://api.iextrading.com/"
 )
 
 // Quote repesents the format returned for a quote from IEX(https://iextrading.com)
@@ -126,6 +127,26 @@ type Stat struct {
 	Month1ChangePercent float64     `json:"month1ChangePercent"`
 	Day5ChangePercent   float64     `json:"day5ChangePercent"`
 	Day30ChangePercent  float64     `json:"day30ChangePercent"`
+}
+
+// Earnings is returned from iex/earnings
+type Earnings struct {
+	Symbol   string `json:"symbol"`
+	Earnings []struct {
+		ActualEPS              float64 `json:"actualEPS"`
+		ConsensusEPS           float64 `json:"consensusEPS"`
+		EstimatedEPS           float64 `json:"estimatedEPS"`
+		AnnounceTime           string  `json:"announceTime"`
+		NumberOfEstimates      int     `json:"numberOfEstimates"`
+		EPSSurpriseDollar      float64 `json:"EPSSurpriseDollar"`
+		EPSReportDate          string  `json:"EPSReportDate"`
+		FiscalPeriod           string  `json:"fiscalPeriod"`
+		FiscalEndDate          string  `json:"fiscalEndDate"`
+		YearAgo                float64 `json:"yearAgo"`
+		YearAgoChangePercent   float64 `json:"yearAgoChangePercent"`
+		EstimatedChangePercent float64 `json:"estimatedChangePercent"`
+		SymbolID               int     `json:"symbolId"`
+	} `json:"earnings"`
 }
 
 // Batch is a []Quote

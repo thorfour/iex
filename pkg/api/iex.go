@@ -101,6 +101,25 @@ func Stats(ticker string, displayPercent bool) (*types.Stat, error) {
 	return stat, nil
 }
 
+// Earnings returns a company earnings
+func Earnings(ticker string) (*types.Earnings, error) {
+
+	url := endpoint.API().Stock().Ticker(ticker).Earnings()
+	jsonEarn, err := getJSON(url)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse into stat
+	earn := new(types.Earnings)
+	err = json.Unmarshal(jsonEarn, &earn)
+	if err != nil {
+		return nil, err
+	}
+
+	return earn, nil
+}
+
 // getJSON returns the JSON response from a url
 func getJSON(url endpoint.APIString) ([]byte, error) {
 

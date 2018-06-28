@@ -67,3 +67,10 @@ func TestStat(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestEarnings(t *testing.T) {
+	_, err := Earnings("aapl")
+	if err != nil {
+		t.Fatal(err)
+	}
+}

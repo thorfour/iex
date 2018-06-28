@@ -99,3 +99,8 @@ func (s APIString) Query(args map[string]interface{}) APIString {
 func (s APIString) Stats() APIString {
 	return APIString(string(s) + types.StatsStr + "/")
 }
+
+// Earnings adds the earnings type
+func (s APIString) Earnings() APIString {
+	return APIString(string(s) + types.EarningsStr + "/")
+}
