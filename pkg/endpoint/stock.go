@@ -83,3 +83,14 @@ func (s APIString) Integer(a int) APIString {
 func (s APIString) String() string {
 	return string(s)
 }
+
+// Query appends a query string onto APIString
+func (s APIString) Query(args map[string]interface{}) APIString {
+	api := string(s) + "?"
+	for k, v := range args {
+		api = api + k + "=" + fmt.Sprintf("%v", v) + ","
+	}
+
+	api = strings.TrimSuffix(api, ",")
+	return APIString(api)
+}

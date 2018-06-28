@@ -23,7 +23,7 @@ func TestBatchQuotes(t *testing.T) {
 
 func TestQuote(t *testing.T) {
 	symbol := "WDC"
-	info, err := Quote(symbol)
+	info, err := Quote(symbol, false)
 	if err != nil {
 		t.Fatal(err)
 	}

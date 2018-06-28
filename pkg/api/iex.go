@@ -11,8 +11,8 @@ import (
 )
 
 // Quote returns a stock quote for a given ticker
-func Quote(ticker string) (*types.Quote, error) {
-	url := endpoint.API().Stock().Ticker(ticker).Quote()
+func Quote(ticker string, displayPercent bool) (*types.Quote, error) {
+	url := endpoint.API().Stock().Ticker(ticker).Quote().Query(map[string]interface{}{"displayPercent": displayPercent})
 	jsonQuote, err := getJSON(url)
 	if err != nil {
 		return nil, err
