@@ -60,3 +60,12 @@ func TestNews(t *testing.T) {
 
 	fmt.Println(news)
 }
+
+func TestStats(t *testing.T) {
+	stats, err := Stats("aapl")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	fmt.Println(stats)
+}
