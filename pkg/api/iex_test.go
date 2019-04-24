@@ -62,7 +62,7 @@ func TestNews(t *testing.T) {
 }
 
 func TestStats(t *testing.T) {
-	stats, err := Stats("aapl")
+	stats, err := Stats("mu")
 	if err != nil {
 		t.Fatal(err)
 	}
