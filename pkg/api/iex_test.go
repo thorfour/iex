@@ -62,10 +62,15 @@ func TestNews(t *testing.T) {
 }
 
 func TestStats(t *testing.T) {
-	stats, err := Stats("mu")
+	_, err := Stats("mu")
 	if err != nil {
 		t.Fatal(err)
 	}
+}
 
-	fmt.Println(stats)
+func TestCompany(t *testing.T) {
+	_, err := Company("goog")
+	if err != nil {
+		t.Fatal(err)
+	}
 }
