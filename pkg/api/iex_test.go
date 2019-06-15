@@ -5,6 +5,16 @@ import (
 	"testing"
 )
 
+func TestQuote(t *testing.T) {
+	symbol := "WDC"
+	info, err := Quote(symbol)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	fmt.Println(info)
+}
+
 func TestBatchQuotes(t *testing.T) {
 	b, err := BatchQuotes([]string{"amd", "tsla"})
 	if err != nil {
@@ -19,16 +29,6 @@ func TestBatchQuotes(t *testing.T) {
 	if q.Symbol != "AMD" {
 		t.Error("Symbol was differnt than requested")
 	}
-}
-
-func TestQuote(t *testing.T) {
-	symbol := "WDC"
-	info, err := Quote(symbol)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	fmt.Println(info)
 }
 
 func TestPrice(t *testing.T) {
